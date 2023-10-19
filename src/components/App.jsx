@@ -3,15 +3,26 @@ import Contacts from './Contacts/Contacts';
 import ContactForm from './Form/Form';
 import React from 'react';
 import SearchQuery from './SearchQuery/SearchQuery';
+import { Route, Routes } from 'react-router';
+import Layout from './Layout/Layout';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 const App = () => {
   return (
     <Container>
-      <Title>Phonebook</Title>
-      <ContactForm />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Route>
+      </Routes>
+      {/* <ContactForm />
       <Contacts>
         <SearchQuery />
-      </Contacts>
+      </Contacts> */}
     </Container>
   );
 };
