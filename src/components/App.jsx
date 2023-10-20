@@ -1,4 +1,4 @@
-import { Container, Title } from './App.styled';
+import { Container } from './App.styled';
 // import Contacts from './Contacts/Contacts';
 // import ContactForm from './Form/Form';
 import React from 'react';
