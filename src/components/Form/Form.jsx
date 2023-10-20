@@ -4,7 +4,7 @@ import { Forma, Label } from './Form.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContact } from 'redux/contacts/operations';
 
-const Form = () => {
+const ContactForm = () => {
   const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
   const nameId = nanoid();
@@ -66,4 +66,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default ContactForm;
