@@ -5,7 +5,7 @@ axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
 
 export const token = {
   set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
   unset() {
     axios.defaults.headers.common.Authorization = '';
@@ -63,14 +63,10 @@ export const fetchCurrentUser = createAsyncThunk(
       return;
     }
     console.log(persistedToken);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${persistedToken}`,
-      },
-    };
+    token.set(persistedToken);
+
     try {
-      token.set(persistedToken);
-      const { data } = await axios.get('/users/current', config);
+      const { data } = await axios.get('/users/current');
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
