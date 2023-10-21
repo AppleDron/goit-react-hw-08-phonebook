@@ -59,6 +59,7 @@ export const fetchCurrentUser = createAsyncThunk(
     const persistedToken = state.auth.token;
 
     if (persistedToken === null) {
+      console.log(persistedToken);
       return;
     }
     token.set(persistedToken);
