@@ -1,28 +1,19 @@
 import { Box, Button, TextField } from '@mui/material';
-// import axios from 'axios';
 import { Container } from 'components/App.styled';
 import { LoginDiv } from 'mainStyles/styles';
 import { nanoid } from 'nanoid';
-// import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signUp } from 'redux/auth/operations';
-
-// const signup = async body => {
-//   try {
-//     const { data } = await axios.post('/users/signup', body);
-//     console.log(data);
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const SignupPage = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorName, setErrorName] = useState(false);
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
 
   const nameInputId = nanoid();
   const emailInputId = nanoid();
@@ -46,10 +37,18 @@ const SignupPage = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    // console.log({ name, email, password });
-    // signup({ name, email, password });
-    dispatch(signUp({ name, email, password }));
+
+    name === '' ? setErrorName(true) : setErrorName(false);
+    email === '' ? setErrorEmail(true) : setErrorEmail(false);
+    password === '' ? setErrorPassword(true) : setErrorPassword(false);
+
+    if (name && email && password) dispatch(signUp({ name, email, password }));
+
+    setName('');
+    setEmail('');
+    setPassword('');
   };
+
   return (
     <Container>
       <Box
@@ -67,34 +66,38 @@ const SignupPage = () => {
         }}
         noValidate
         autoComplete="off"
+        pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
       >
         <LoginDiv>
           <TextField
             value={name}
-            error={false}
+            error={errorName}
             name="name"
             label="Username"
             onChange={handleChange}
             id={nameInputId}
+            helperText={errorName && 'Please type a name'}
           />
           <TextField
-            error={false}
+            error={errorEmail}
             name="email"
             label="Email"
             type="email"
             onChange={handleChange}
             id={emailInputId}
             value={email}
+            helperText={errorEmail && 'Please type an email'}
           />
           <TextField
-            error={false}
+            error={errorPassword}
             name="password"
             label="Password"
             type="password"
             onChange={handleChange}
             id={passwordInputId}
             value={password}
-            //   helperText="Incorrect entry."
+            helperText={errorPassword && 'Please type a password'}
           />
           <Button
             variant="outlined"

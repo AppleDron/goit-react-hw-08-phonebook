@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import { AiFillDelete } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ContactList,
-  Contactitem,
-  DeleteButton,
-  TitleContacts,
+  ContactInfo,
+  ContainerContacts,
+  List,
+  ListItem,
+  SectionTitle,
+  SectionsContainer,
+  StyledButton,
+  StyledError,
 } from './Contacts.styled';
 import { deleteContact, getContactsThunk } from 'redux/contacts/operations';
 import {
@@ -25,27 +29,29 @@ const Contacts = ({ children }) => {
   }, [dispatch]);
 
   return (
-    <div>
-      <TitleContacts>Contacts</TitleContacts>
-      {children}
-      {isLoading && !error && <b>In progress...</b>}
-      {error && <b>Error!</b>}
-      <ContactList>
-        {filteredContacts.map(contact => (
-          <Contactitem key={contact.id}>
-            <p>
-              {contact.name}: <span>{contact.number}</span>
-            </p>
-            <DeleteButton
-              type="button"
-              onClick={() => dispatch(deleteContact(contact.id))}
-            >
-              <AiFillDelete />
-            </DeleteButton>
-          </Contactitem>
-        ))}
-      </ContactList>
-    </div>
+    <ContainerContacts>
+      <SectionsContainer>
+        <SectionTitle>Contacts</SectionTitle>
+        {children}
+        {isLoading && !error && <StyledError>In progress...</StyledError>}
+        {error && <StyledError>Error!</StyledError>}
+        <List>
+          {filteredContacts.map(contact => (
+            <ListItem key={contact.id}>
+              <ContactInfo>
+                {contact.name}: <span>{contact.number}</span>
+              </ContactInfo>
+              <StyledButton
+                type="button"
+                onClick={() => dispatch(deleteContact(contact.id))}
+              >
+                <AiFillDelete />
+              </StyledButton>
+            </ListItem>
+          ))}
+        </List>
+      </SectionsContainer>
+    </ContainerContacts>
   );
 };
 

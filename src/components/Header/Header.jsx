@@ -14,13 +14,23 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { NavLink } from 'react-router-dom';
 import { HeadersStyles } from 'mainStyles/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from 'redux/auth/operations';
+import LogoutIcon from '@mui/icons-material/Logout';
+import User from 'components/User/User';
 
 const pages = ['LogIn', 'SignUp'];
 const barPages = ['Home', 'Contacts'];
-const mobilePages = ['Home', 'Contacts', 'LogIn', 'SignUp'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const { token } = useSelector(state => state.auth);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -88,16 +98,28 @@ function Header() {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {mobilePages.map(page => (
-                  <NavLink
-                    to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
-                    key={page}
-                  >
-                    <MenuItem>
-                      <Typography textAlign="center">{page}</Typography>
-                    </MenuItem>
-                  </NavLink>
-                ))}
+                {!token &&
+                  pages.map(page => (
+                    <NavLink
+                      to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
+                      key={page}
+                    >
+                      <MenuItem>
+                        <Typography textAlign="center">{page}</Typography>
+                      </MenuItem>
+                    </NavLink>
+                  ))}
+                {token &&
+                  barPages.map(page => (
+                    <NavLink
+                      to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
+                      key={page}
+                    >
+                      <MenuItem>
+                        <Typography textAlign="center">{page}</Typography>
+                      </MenuItem>
+                    </NavLink>
+                  ))}
               </Menu>
             </Box>
             <MenuBookIcon
@@ -124,6 +146,14 @@ function Header() {
             >
               PHONEBOOK
             </Typography>
+            {window.innerWidth < 900 && isLoggedIn && (
+              <>
+                <User />
+                <IconButton size="large" color="white" onClick={handleLogout}>
+                  <LogoutIcon sx={{ color: 'white' }} />
+                </IconButton>
+              </>
+            )}
             <Box
               sx={{
                 flexGrow: 1,
@@ -134,19 +164,27 @@ function Header() {
                 },
               }}
             >
-              {barPages.map(page => (
-                <NavLink
-                  to={`/${page === 'Home' ? '' : page.toLowerCase()}`}
-                  key={page}
-                >
-                  <Button
+              {token &&
+                barPages.map(page => (
+                  <NavLink
+                    to={`/${page === 'Home' ? '' : page.toLowerCase()}`}
                     key={page}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                    {page}
+                    <Button
+                      key={page}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      {page}
+                    </Button>
+                  </NavLink>
+                ))}
+              {!token && (
+                <NavLink to={'/'} key="home">
+                  <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                    Home
                   </Button>
                 </NavLink>
-              ))}
+              )}
             </Box>
             <Box
               sx={{
@@ -158,16 +196,26 @@ function Header() {
                 },
               }}
             >
-              {pages.map(page => (
-                <NavLink to={`/${page.toLowerCase()}`} key={page}>
-                  <Button
-                    key={page}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {page}
-                  </Button>
-                </NavLink>
-              ))}
+              {!token &&
+                pages.map(page => (
+                  <NavLink to={`/${page.toLowerCase()}`} key={page}>
+                    <Button
+                      key={page}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      {page}
+                    </Button>
+                  </NavLink>
+                ))}
+
+              {isLoggedIn && (
+                <>
+                  <User />
+                  <IconButton size="large" color="white" onClick={handleLogout}>
+                    <LogoutIcon sx={{ color: 'white' }} />
+                  </IconButton>
+                </>
+              )}
             </Box>
           </Toolbar>
         </Container>

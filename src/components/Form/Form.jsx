@@ -1,6 +1,6 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
-import { Forma, Label } from './Form.styled';
+import { Forma, StyledButton, StyledInput, StyledLabel } from './Form.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { createContact } from 'redux/contacts/operations';
 
@@ -37,9 +37,9 @@ const ContactForm = () => {
   return (
     <div>
       <Forma onSubmit={handleSubmit}>
-        <Label htmlFor={nameId}>
+        <StyledLabel htmlFor={nameId}>
           Name
-          <input
+          <StyledInput
             id={nameId}
             type="text"
             name="name"
@@ -47,10 +47,10 @@ const ContactForm = () => {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
-        </Label>
-        <Label htmlFor={numberId}>
+        </StyledLabel>
+        <StyledLabel htmlFor={numberId}>
           Number
-          <input
+          <StyledInput
             id={numberId}
             type="tel"
             name="number"
@@ -58,9 +58,9 @@ const ContactForm = () => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
-        </Label>
+        </StyledLabel>
 
-        <button type="submit">Add contact</button>
+        <StyledButton type="submit">Add contact</StyledButton>
       </Forma>
     </div>
   );
