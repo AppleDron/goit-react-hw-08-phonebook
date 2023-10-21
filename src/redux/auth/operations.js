@@ -62,6 +62,7 @@ export const fetchCurrentUser = createAsyncThunk(
       console.log(persistedToken);
       return;
     }
+    console.log(persistedToken);
     token.set(persistedToken);
 
     try {
