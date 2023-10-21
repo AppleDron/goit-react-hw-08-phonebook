@@ -63,11 +63,14 @@ export const fetchCurrentUser = createAsyncThunk(
       return;
     }
     console.log(persistedToken);
-    token.set(persistedToken);
-
+    const config = {
+      headers: {
+        Authorization: `Bearer ${persistedToken}`,
+      },
+    };
     try {
       token.set(persistedToken);
-      const { data } = await axios.get('/users/current');
+      const { data } = await axios.get('/users/current', config);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
